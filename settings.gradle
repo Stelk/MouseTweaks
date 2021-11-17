@@ -7,3 +7,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+rootProject.buildFileName = 'build-fabric.gradle'

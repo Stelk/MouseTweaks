@@ -1,9 +1,8 @@
 package yalter.mousetweaks.api;
 
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.Slot;
-
 import java.util.List;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 
 /**
  * This is the extended version of the interface you want to implement in your GuiScreen to make it compatible
@@ -106,5 +105,5 @@ public interface IMTModGuiContainer3Ex {
 	 * @param clickType click type, most frequently used ones are PICKUP (normal left or right click)
 	 *                  and QUICK_MOVE (shift click)
 	 */
-	void MT_clickSlot(Slot slot, int mouseButton, ClickType clickType);
+	void MT_clickSlot(Slot slot, int mouseButton, SlotActionType clickType);
 }

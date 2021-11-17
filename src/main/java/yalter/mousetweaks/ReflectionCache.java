@@ -1,12 +1,11 @@
 package yalter.mousetweaks;
 
-import net.minecraft.CrashReport;
-import net.minecraft.ReportedException;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
 
 public class ReflectionCache {
 	private HashMap<String, Class> classes = new HashMap<String, Class>();
@@ -24,8 +23,8 @@ public class ReflectionCache {
 		try {
 			return method.invoke(obj, args);
 		} catch (IllegalAccessException e) {
-			CrashReport crashreport = CrashReport.forThrowable(e, "Invoking method in MouseTweaks' reflection");
-			throw new ReportedException(crashreport);
+			CrashReport crashreport = CrashReport.create(e, "Invoking method in MouseTweaks' reflection");
+			throw new CrashException(crashreport);
 		}
 	}
 
@@ -35,8 +34,8 @@ public class ReflectionCache {
 		try {
 			return field.get(obj);
 		} catch (IllegalAccessException e) {
-			CrashReport crashreport = CrashReport.forThrowable(e, "Getting field value in MouseTweaks' reflection");
-			throw new ReportedException(crashreport);
+			CrashReport crashreport = CrashReport.create(e, "Getting field value in MouseTweaks' reflection");
+			throw new CrashException(crashreport);
 		}
 	}
 
@@ -46,8 +45,8 @@ public class ReflectionCache {
 		try {
 			field.set(obj, value);
 		} catch (IllegalAccessException e) {
-			CrashReport crashreport = CrashReport.forThrowable(e, "Setting field value in MouseTweaks' reflection");
-			throw new ReportedException(crashreport);
+			CrashReport crashreport = CrashReport.create(e, "Setting field value in MouseTweaks' reflection");
+			throw new CrashException(crashreport);
 		}
 	}
 

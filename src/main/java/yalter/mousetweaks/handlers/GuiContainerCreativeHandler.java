@@ -1,15 +1,15 @@
 package yalter.mousetweaks.handlers;
 
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.screen.slot.Slot;
 
 public class GuiContainerCreativeHandler extends GuiContainerHandler {
-	public GuiContainerCreativeHandler(CreativeModeInventoryScreen guiContainerCreative) {
+	public GuiContainerCreativeHandler(CreativeInventoryScreen guiContainerCreative) {
 		super(guiContainerCreative);
 	}
 
 	@Override
 	public boolean isIgnored(Slot slot) {
-		return (super.isIgnored(slot) || slot.container != mc.player.getInventory());
+		return (super.isIgnored(slot) || slot.inventory != mc.player.getInventory());
 	}
 }

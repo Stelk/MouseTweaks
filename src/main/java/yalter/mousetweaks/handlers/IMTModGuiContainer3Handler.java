@@ -1,10 +1,5 @@
 package yalter.mousetweaks.handlers;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.CrashReport;
-import net.minecraft.ReportedException;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.Slot;
 import yalter.mousetweaks.IGuiScreenHandler;
 import yalter.mousetweaks.MouseButton;
 import yalter.mousetweaks.Reflection;
@@ -13,14 +8,19 @@ import yalter.mousetweaks.api.IMTModGuiContainer3;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
 
 public class IMTModGuiContainer3Handler implements IGuiScreenHandler {
-	private Minecraft mc;
+	private MinecraftClient mc;
 	private IMTModGuiContainer3 modGuiContainer;
 	private Method handleMouseClick;
 
 	public IMTModGuiContainer3Handler(IMTModGuiContainer3 modGuiContainer) {
-		this.mc = Minecraft.getInstance();
+		this.mc = MinecraftClient.getInstance();
 		this.modGuiContainer = modGuiContainer;
 		this.handleMouseClick = Reflection.getHMCMethod(modGuiContainer);
 	}
@@ -56,24 +56,24 @@ public class IMTModGuiContainer3Handler implements IGuiScreenHandler {
 			try {
 				handleMouseClick.invoke(modGuiContainer,
 				                        slot,
-				                        slot.index,
+				                        slot.id,
 				                        mouseButton.getValue(),
-				                        shiftPressed ? ClickType.QUICK_MOVE : ClickType.PICKUP);
+				                        shiftPressed ? SlotActionType.QUICK_MOVE : SlotActionType.PICKUP);
 			} catch (InvocationTargetException e) {
-				CrashReport crashreport = CrashReport.forThrowable(e,
+				CrashReport crashreport = CrashReport.create(e,
 						                                  "handleMouseClick() threw an exception when "
 				                                                   + "called from MouseTweaks.");
-				throw new ReportedException(crashreport);
+				throw new CrashException(crashreport);
 			} catch (IllegalAccessException e) {
-				CrashReport crashreport = CrashReport.forThrowable(e,
+				CrashReport crashreport = CrashReport.create(e,
 				                                                   "Calling handleMouseClick() from MouseTweaks.");
-				throw new ReportedException(crashreport);
+				throw new CrashException(crashreport);
 			}
 		} else {
-			mc.gameMode.handleInventoryMouseClick(modGuiContainer.MT_getContainer().containerId,
-			                                      slot.index,
+			mc.interactionManager.clickSlot(modGuiContainer.MT_getContainer().syncId,
+			                                      slot.id,
 			                                      mouseButton.getValue(),
-			                                      shiftPressed ? ClickType.QUICK_MOVE : ClickType.PICKUP,
+			                                      shiftPressed ? SlotActionType.QUICK_MOVE : SlotActionType.PICKUP,
 			                                      mc.player);
 		}
 	}

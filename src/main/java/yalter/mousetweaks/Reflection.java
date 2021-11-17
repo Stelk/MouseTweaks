@@ -1,14 +1,13 @@
 package yalter.mousetweaks;
 
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.CrashReport;
-import net.minecraft.ReportedException;
-import net.minecraft.world.inventory.ClickType;
-import net.minecraft.world.inventory.Slot;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
 
 public class Reflection {
 	private static Obfuscation obfuscation;
@@ -24,7 +23,7 @@ public class Reflection {
 		guiContainerClass = new ReflectionCache();
 
 		try {
-			Field f = getField(AbstractContainerScreen.class, getObfuscatedName(Constants.IGNOREMOUSEUP_NAME));
+			Field f = getField(HandledScreen.class, getObfuscatedName(Constants.IGNOREMOUSEUP_NAME));
 			guiContainerClass.storeField(Constants.IGNOREMOUSEUP_NAME.forgeName, f);
 		} catch (NoSuchFieldException e) {
 			Logger.Log("Could not retrieve GuiContainer.ignoreMouseUp.");
@@ -33,7 +32,7 @@ public class Reflection {
 		}
 
 		try {
-			Field f = getField(AbstractContainerScreen.class, getObfuscatedName(Constants.DRAGSPLITTING_NAME));
+			Field f = getField(HandledScreen.class, getObfuscatedName(Constants.DRAGSPLITTING_NAME));
 			guiContainerClass.storeField(Constants.DRAGSPLITTING_NAME.forgeName, f);
 		} catch (NoSuchFieldException e) {
 			Logger.Log("Could not retrieve GuiContainer.dragSplitting.");
@@ -42,7 +41,7 @@ public class Reflection {
 		}
 
 		try {
-			Field f = getField(AbstractContainerScreen.class, getObfuscatedName(Constants.DRAGSPLITTINGBUTTON_NAME));
+			Field f = getField(HandledScreen.class, getObfuscatedName(Constants.DRAGSPLITTINGBUTTON_NAME));
 			guiContainerClass.storeField(Constants.DRAGSPLITTINGBUTTON_NAME.forgeName, f);
 		} catch (NoSuchFieldException e) {
 			Logger.Log("Could not retrieve GuiContainer.dragSplittingButton.");
@@ -51,7 +50,7 @@ public class Reflection {
 		}
 
 		try {
-			Method m = getMethod(AbstractContainerScreen.class,
+			Method m = getMethod(HandledScreen.class,
 			                     getObfuscatedName(Constants.GETSELECTEDSLOT_NAME),
 			                     double.class,
 			                     double.class);
@@ -65,7 +64,7 @@ public class Reflection {
 		Logger.Log("Success.");
 	}
 
-	public static Method getHMCMethod(AbstractContainerScreen object) {
+	public static Method getHMCMethod(HandledScreen object) {
 		if (HMCCache.containsKey(object.getClass())) {
 			return HMCCache.get(object.getClass());
 		}
@@ -76,17 +75,17 @@ public class Reflection {
 			                             Slot.class,
 			                             int.class,
 			                             int.class,
-			                             ClickType.class);
+			                             SlotActionType.class);
 
 			Logger.DebugLog("Found handleMouseClick() for " + object.getClass().getSimpleName() + ", caching.");
 
 			HMCCache.put(object.getClass(), method);
 			return method;
 		} catch (NoSuchMethodException e) {
-			CrashReport crashreport = CrashReport.forThrowable(e,
+			CrashReport crashreport = CrashReport.create(e,
 															   "MouseTweaks could not find handleMouseClick() in a "
 															   + "AbstractContainerScreen.");
-			throw new ReportedException(crashreport);
+			throw new CrashException(crashreport);
 		}
 	}
 
@@ -101,7 +100,7 @@ public class Reflection {
 			                             Slot.class,
 			                             int.class,
 			                             int.class,
-			                             ClickType.class);
+			                             SlotActionType.class);
 
 			Logger.DebugLog("Found handleMouseClick() for " + object.getClass().getSimpleName() + ", caching.");
 
@@ -179,15 +178,15 @@ public class Reflection {
 		checkObfuscation = false;
 
 		try {
-			getField(AbstractContainerScreen.class, Constants.IGNOREMOUSEUP_NAME.mcpName);
+			getField(HandledScreen.class, Constants.IGNOREMOUSEUP_NAME.mcpName);
 			obfuscation = Obfuscation.MCP;
 		} catch (NoSuchFieldException e) {
 			try {
-				getField(AbstractContainerScreen.class, Constants.IGNOREMOUSEUP_NAME.forgeName);
+				getField(HandledScreen.class, Constants.IGNOREMOUSEUP_NAME.forgeName);
 				obfuscation = Obfuscation.FORGE;
 			} catch (NoSuchFieldException ex) {
 				try {
-					getField(AbstractContainerScreen.class, Constants.IGNOREMOUSEUP_NAME.loomName);
+					getField(HandledScreen.class, Constants.IGNOREMOUSEUP_NAME.loomName);
 					obfuscation = Obfuscation.LOOM;
 				} catch (NoSuchFieldException exc) {
 					obfuscation = Obfuscation.VANILLA;
