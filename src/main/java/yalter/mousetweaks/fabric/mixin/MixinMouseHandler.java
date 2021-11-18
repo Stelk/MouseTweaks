@@ -27,4 +27,3 @@ public abstract class MixinMouseHandler {
         }
     }
 }
-//@Inject(method = "lambda$onMove$11(Lnet/minecraft/client/gui/screens/Screen;DDDD)V", at = @At("HEAD"), cancellable = true)
