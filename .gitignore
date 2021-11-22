@@ -16,10 +16,12 @@ out
 # gradle
 build
 .gradle
+build.gradle
 
 # other
 eclipse
 run
+remappedSrc
 
 # Files from Forge MDK
 forge*changelog.txt

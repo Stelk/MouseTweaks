@@ -7,5 +7,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+//rootProject.buildFileName = 'build-fabric.gradle'
 
-rootProject.buildFileName = 'build-fabric.gradle'

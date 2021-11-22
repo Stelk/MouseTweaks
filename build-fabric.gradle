@@ -2,14 +2,13 @@ plugins {
     id 'fabric-loom' version '0.10-SNAPSHOT'
 }
 
-def minecraftVersion = "1.18-pre4" // Used for output JAR filenames.
-
 version = project.mod_version
 group = "yalter.mousetweaks"
-archivesBaseName = "MouseTweaks-fabric-mc${minecraftVersion}"
+archivesBaseName = "MouseTweaks-fabric-mc${minecraft_version}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+// Exclude Forge files from builds
 sourceSets {
     main {
         java {
@@ -23,13 +22,13 @@ sourceSets {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:1.18-pre4"
-    mappings "net.fabricmc:yarn:1.18-pre4+build.3:v2"
-    modImplementation "net.fabricmc:fabric-loader:0.12.5"
-            
-    //Fabric api
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.42.7+1.18"
+    minecraft "com.mojang:minecraft:$project.minecraft_version"
+    mappings "net.fabricmc:yarn:$project.yarn_mappings:v2"
+
+    modImplementation "net.fabricmc:fabric-loader:$project.loader_version" because 'version-independent mod loader, providing mod loading and code patching functionality.'
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$project.fabric_version" because 'our “hook layer”, providing the most common hooks and interoperability required for Fabric mods,'
 }
+
 
 processResources {
     inputs.property "version", project.version

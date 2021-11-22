@@ -14,13 +14,13 @@ public class Constants {
 
 	// Names for reflection.
 	public static final ObfuscatedName IGNOREMOUSEUP_NAME
-			= new ObfuscatedName("skipNextRelease", "f_97719_", "field_2798", "Q");
+			= new ObfuscatedName("cancelNextRelease", "f_97719_", "field_2798", "Q");
 	public static final ObfuscatedName DRAGSPLITTING_NAME
-			= new ObfuscatedName("isQuickCrafting", "f_97738_", "field_2794", "y");
+			= new ObfuscatedName("cursorDragging", "f_97738_", "field_2794", "y");
 	public static final ObfuscatedName DRAGSPLITTINGBUTTON_NAME
-			= new ObfuscatedName("quickCraftingButton", "f_97718_", "field_2778", "P");
+			= new ObfuscatedName("heldButtonCode", "f_97718_", "field_2778", "P");
 	public static final ObfuscatedName GETSELECTEDSLOT_NAME
-			= new ObfuscatedName("findSlot", "m_97744_", "method_2386", "a");
+			= new ObfuscatedName("getSlotAt", "m_97744_", "method_2386", "a");
 	static final ObfuscatedName HANDLEMOUSECLICK_NAME
-			= new ObfuscatedName("slotClicked", "m_6597_", "method_2383", "a");
+			= new ObfuscatedName("onMouseClick", "m_6597_", "method_2383", "a");
 }
