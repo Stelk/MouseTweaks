@@ -1,0 +1,43 @@
+plugins {
+    id 'fabric-loom' version '0.10-SNAPSHOT'
+}
+
+version = project.mod_version
+group = "yalter.mousetweaks"
+archivesBaseName = "MouseTweaks-fabric-mc${minecraft_version}"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+// Exclude Forge files from builds
+sourceSets {
+    main {
+        java {
+            exclude 'yalter/mousetweaks/forge'
+        }
+
+        resources {
+            exclude 'META-INF/mods.toml'
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:$project.minecraft_version"
+    mappings "net.fabricmc:yarn:$project.yarn_mappings:v2"
+
+    modImplementation "net.fabricmc:fabric-loader:$project.loader_version" because 'version-independent mod loader, providing mod loading and code patching functionality.'
+    modImplementation "net.fabricmc.fabric-api:fabric-api:$project.fabric_version" because 'our “hook layer”, providing the most common hooks and interoperability required for Fabric mods,'
+}
+
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+java {
+    withSourcesJar()
+}
